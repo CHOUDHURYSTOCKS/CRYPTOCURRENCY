@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Top 100 Cryptocurrencies</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial, sans-serif;
+padding:30px;
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#1e293b;
+}
+
+th, td{
+padding:12px;
+text-align:left;
+border-bottom:1px solid #334155;
+}
+
+th{
+background:#020617;
+}
+
+tr:hover{
+background:#334155;
+}
+
+.green{
+color:#22c55e;
+}
+
+.red{
+color:#ef4444;
+}
+
+img{
+width:24px;
+vertical-align:middle;
+margin-right:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🚀 Top 100 Cryptocurrencies</h1>
+
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Coin</th>
+<th>Price (USD)</th>
+<th>Market Cap</th>
+<th>24h Change</th>
+</tr>
+</thead>
+
+<tbody id="crypto-table"></tbody>
+
+</table>
+
+<script>
+
+async function loadCrypto(){
+
+const url =
+"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+
+const response = await fetch(url);
+const data = await response.json();
+
+let table = document.getElementById("crypto-table");
+table.innerHTML = "";
+
+data.forEach((coin, index)=>{
+
+let changeClass = coin.price_change_percentage_24h >= 0 ? "green":"red";
+
+let row = `
+<tr>
+<td>${index+1}</td>
+<td><img src="${coin.image}"> ${coin.name}</td>
+<td>$${coin.current_price}</td>
+<td>$${coin.market_cap.toLocaleString()}</td>
+<td class="${changeClass}">
+${coin.price_change_percentage_24h.toFixed(2)}%
+</td>
+</tr>
+`;
+
+table.innerHTML += row;
+
+});
+
+}
+
+loadCrypto();
+
+</script>
+
+</body>
+</html>
