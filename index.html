@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto World</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #0f0f1e;
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #1a1a2e;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #f39c12;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #f39c12;
+            margin-bottom: 20px;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #f39c12;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #1a1a2e;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .event::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background: #f39c12;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .event h3 {
+            margin-bottom: 5px;
+        }
+
+        .event:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #f39c12;
+        }
+
+        /* YouTube Section */
+        .youtube-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .youtube-section iframe {
+            width: 100%;
+            max-width: 700px;
+            height: 400px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .bottom-link {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .bottom-link a {
+            text-decoration: none;
+            color: #1abc9c;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .bottom-link a:hover {
+            color: #f39c12;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: #1a1a2e;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .youtube-section iframe {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#">HOME</a>
+            <a href="learn.html">LEARN</a>
+            <a href="important_web_link.html" target="_blank">IMPORTANT WEB LINK</a>
+            <a href="youtube_link.html">YOUTUBE LINK</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h1>Welcome to Crypto World</h1>
+            <p>Explore the fascinating history, learning resources, and latest information about cryptocurrencies.</p>
+        </section>
+
+        <section id="learn">
+            <h2>Learn About Cryptocurrency</h2>
+            <p>Cryptocurrency is a digital or virtual form of currency that uses cryptography for security. It operates independently of a central bank and has a decentralized structure.</p>
+        </section>
+
+        <section id="history">
+            <h2>Crypto History Timeline</h2>
+            <div class="timeline">
+                <div class="event">
+                    <h3>2008 - Bitcoin Concept</h3>
+                    <p>Satoshi Nakamoto publishes the Bitcoin whitepaper introducing blockchain-based digital currency.</p>
+                </div>
+                <div class="event">
+                    <h3>2009 - Bitcoin Launch</h3>
+                    <p>The first Bitcoin software is released and the genesis block is mined.</p>
+                </div>
+                <div class="event">
+                    <h3>2011 - Altcoins Rise</h3>
+                    <p>Alternative cryptocurrencies like Litecoin and Namecoin emerge to improve upon Bitcoin's technology.</p>
+                </div>
+                <div class="event">
+                    <h3>2015 - Ethereum & Smart Contracts</h3>
+                    <p>Ethereum is launched, enabling smart contracts and decentralized applications (dApps).</p>
+                </div>
+                <div class="event">
+                    <h3>2017 - ICO Boom</h3>
+                    <p>Initial Coin Offerings (ICOs) gain popularity as a fundraising method for crypto projects.</p>
+                </div>
+                <div class="event">
+                    <h3>2021 - NFT Craze</h3>
+                    <p>Non-fungible tokens (NFTs) become mainstream, representing digital art and collectibles on blockchains.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="youtube" class="youtube-section">
+            <h2>Blockchain Explained in FIVE Levels of Difficulty</h2>
+            <video width="640" height="360" controls>
+    <source src="Blockchain_Expert_Explains_One_Concept_in_5_Levels_of_Difficulty.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+        </section>
+
+        <div class="bottom-link">
+            <a href="https://www.coingecko.com/en" target="_blank">TOP 100 CRYPTO</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Crypto World. All rights reserved.
+    </footer>
+</body>
+</html>
