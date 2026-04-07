@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Crypto Pro Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top, #0f2027, #0a0f1c);
+  color: white;
+  padding: 20px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  background: linear-gradient(90deg, #00ffcc, #00aaff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background: #00ff9c;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00ff9c;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  position: relative;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* TEXT */
+.symbol {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.price {
+  font-size: 1.6rem;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.green { color: #00ff9c; }
+.red { color: #ff4d6d; }
+
+.volume {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+/* SHIMMER */
+.skeleton {
+  height: 120px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>🚀 Crypto Pro Dashboard</h1>
+  <div class="live-dot"></div>
+</div>
+
+<div class="grid" id="cryptoGrid">
+  <!-- Loading skeleton -->
+  <div class="skeleton"></div>
+  <div class="skeleton"></div>
+  <div class="skeleton"></div>
+</div>
+
+<div class="footer" id="updatedTime"></div>
+
+<script>
+const coins = [
+  "bitcoin","ethereum","solana","ripple","binancecoin",
+  "litecoin","cardano","dogecoin","uniswap",
+  "pepe","shiba-inu","aave","render-token"
+];
+
+const symbols = {
+  bitcoin:"BTC", ethereum:"ETH", solana:"SOL", ripple:"XRP",
+  binancecoin:"BNB", litecoin:"LTC", cardano:"ADA",
+  dogecoin:"DOGE", uniswap:"UNI", pepe:"PEPE",
+  "shiba-inu":"SHIB", aave:"AAVE", "render-token":"RENDER"
+};
+
+async function fetchData() {
+  const res = await fetch(
+    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins.join(",")}&sparkline=true`
+  );
+  const data = await res.json();
+
+  const grid = document.getElementById("cryptoGrid");
+  grid.innerHTML = "";
+
+  data.forEach(coin => {
+    const change = coin.price_change_percentage_24h;
+    const color = change >= 0 ? "#00ff9c" : "#ff4d6d";
+
+    const card = document.createElement("div");
+    const id = "chart-" + coin.id;
+
+    card.className = "card";
+    card.innerHTML = `
+      <div class="symbol">${symbols[coin.id]}</div>
+      <div class="price">$${coin.current_price.toLocaleString()}</div>
+      <div style="color:${color}">
+        ${change.toFixed(2)}%
+      </div>
+      <canvas id="${id}" height="90"></canvas>
+      <div class="volume">
+        Vol: $${coin.total_volume.toLocaleString()}
+      </div>
+    `;
+
+    grid.appendChild(card);
+
+    setTimeout(() => {
+      new Chart(document.getElementById(id), {
+        type: "line",
+        data: {
+          labels: coin.sparkline_in_7d.price.map(() => ""),
+          datasets: [{
+            data: coin.sparkline_in_7d.price,
+            borderColor: color,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.4,
+            fill: true,
+            backgroundColor: color + "22"
+          }]
+        },
+        options: {
+          animation: { duration: 800 },
+          plugins: { legend: { display: false } },
+          scales: { x: { display: false }, y: { display: false } }
+        }
+      });
+    }, 0);
+  });
+
+  document.getElementById("updatedTime").innerText =
+    "Updated: " + new Date().toLocaleTimeString();
+}
+
+fetchData();
+setInterval(fetchData, 20000);
+</script>
+
+</body>
+</html>
