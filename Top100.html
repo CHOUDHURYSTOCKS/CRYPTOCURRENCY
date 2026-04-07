@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top 100 Cryptocurrencies Live Dashboard</title>
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    :root {
+        --bg-color: #121212;
+        --text-color: #fff;
+        --header-bg: linear-gradient(90deg, #1e1e1e, #2a2a72);
+        --row-even: #1a1a1a;
+        --row-hover: #272727;
+    }
+    [data-theme="light"] {
+        --bg-color: #f0f0f0;
+        --text-color: #121212;
+        --header-bg: linear-gradient(90deg, #4a90e2, #50e3c2);
+        --row-even: #e0e0e0;
+        --row-hover: #d0d0d0;
+    }
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+    }
+    header {
+        background: var(--header-bg);
+        text-align: center;
+        padding: 20px 0;
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-color);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        max-width: 1300px;
+        margin: 15px auto;
+        padding: 0 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .controls input {
+        padding: 8px 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+    }
+    .controls button {
+        padding: 8px 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+    }
+    .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 15px;
+        overflow-x: auto;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    th, td {
+        padding: 12px 8px;
+        text-align: center;
+        font-size: 14px;
+    }
+    th {
+        background: var(--header-bg);
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+    }
+    th span.sort-arrow {
+        margin-left: 6px;
+        font-size: 12px;
+    }
+    tr:nth-child(even) {
+        background: var(--row-even);
+    }
+    tr:hover {
+        background: var(--row-hover);
+    }
+    .symbol {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .symbol img {
+        width: 24px;
+        margin-right: 8px;
+    }
+    .positive { color: #4caf50; }
+    .negative { color: #e53935; }
+    .sparkline {
+        width: 80px;
+        height: 30px;
+    }
+    footer {
+        text-align: center;
+        padding: 15px;
+        margin-top: 40px;
+        color: #aaa;
+        font-size: 14px;
+    }
+</style>
+</head>
+<body data-theme="dark">
+<header>📊 Top 100 Cryptocurrencies Live Dashboard</header>
+
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="Search by name or symbol...">
+    <button id="themeToggle">Toggle Light/Dark Theme</button>
+</div>
+
+<div class="container">
+    <table id="cryptoTable">
+        <thead>
+            <tr>
+                <th data-sort="market_cap_rank">Rank <span class="sort-arrow"></span></th>
+                <th>Coin</th>
+                <th>Symbol</th>
+                <th data-sort="current_price">Price (USD) <span class="sort-arrow"></span></th>
+                <th data-sort="current_price_inr">Price (INR) <span class="sort-arrow"></span></th>
+                <th data-sort="price_change_percentage_24h">24h Change % <span class="sort-arrow"></span></th>
+                <th data-sort="total_volume">24h Volume <span class="sort-arrow"></span></th>
+                <th>Sparkline (7d)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<footer>Powered by CoinGecko — Auto Updates Every 60 Seconds</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const tableBody = document.querySelector("#cryptoTable tbody");
+const searchInput = document.getElementById("searchInput");
+const themeToggle = document.getElementById("themeToggle");
+let cryptoData = [];
+let currentSort = { key: "market_cap_rank", asc: true };
+
+// Theme Toggle
+themeToggle.addEventListener("click", () => {
+    document.body.dataset.theme = document.body.dataset.theme === "dark" ? "light" : "dark";
+});
+
+// Fetch crypto data including sparkline
+async function fetchCryptoData() {
+    const url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h";
+    const response = await fetch(url);
+    const data = await response.json();
+
+    cryptoData = data.map(coin => ({
+        ...coin,
+        current_price_inr: coin.current_price * 83 // Approx conversion
+    }));
+
+    renderTable();
+}
+
+// Render table rows
+function renderTable() {
+    const filter = searchInput.value.toLowerCase();
+    const sortedData = cryptoData.sort((a,b) => {
+        const key = currentSort.key;
+        return currentSort.asc ? a[key] - b[key] : b[key] - a[key];
+    }).filter(coin => coin.name.toLowerCase().includes(filter) || coin.symbol.toLowerCase().includes(filter));
+
+    tableBody.innerHTML = "";
+
+    sortedData.forEach((coin, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${coin.market_cap_rank}</td>
+            <td class="symbol"><img src="${coin.image}" alt="${coin.name} logo"> ${coin.name}</td>
+            <td>${coin.symbol.toUpperCase()}</td>
+            <td>${coin.current_price.toLocaleString("en-US",{style:"currency", currency:"USD"})}</td>
+            <td>${coin.current_price_inr.toLocaleString("en-IN",{style:"currency", currency:"INR"})}</td>
+            <td class="${coin.price_change_percentage_24h >=0 ? 'positive':'negative'}">${coin.price_change_percentage_24h?.toFixed(2)}%</td>
+            <td>${coin.total_volume.toLocaleString("en-US")}</td>
+            <td><canvas class="sparkline" id="sparkline-${coin.id}"></canvas></td>
+        `;
+        tableBody.appendChild(row);
+
+        // Sparkline
+        new Chart(document.getElementById(`sparkline-${coin.id}`), {
+            type: 'line',
+            data: {
+                labels: coin.sparkline_in_7d.price.map((_, i) => i),
+                datasets: [{
+                    data: coin.sparkline_in_7d.price,
+                    borderColor: coin.price_change_percentage_24h>=0 ? '#4caf50' : '#e53935',
+                    borderWidth: 1,
+                    fill: false,
+                    pointRadius: 0,
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: { legend: { display: false }},
+                scales: { x: { display: false }, y: { display: false }}
+            }
+        });
+    });
+}
+
+// Search filter
+searchInput.addEventListener("input", renderTable);
+
+// Sorting
+document.querySelectorAll("#cryptoTable th[data-sort]").forEach(th => {
+    th.addEventListener("click", () => {
+        const key = th.dataset.sort;
+        if(currentSort.key === key) currentSort.asc = !currentSort.asc;
+        else currentSort = { key, asc: true };
+        updateSortArrows();
+        renderTable();
+    });
+});
+
+function updateSortArrows() {
+    document.querySelectorAll("#cryptoTable th[data-sort]").forEach(th => {
+        const arrow = th.querySelector(".sort-arrow");
+        if(th.dataset.sort === currentSort.key) arrow.textContent = currentSort.asc ? "▲" : "▼";
+        else arrow.textContent = "";
+    });
+}
+
+// Initial fetch and auto refresh
+fetchCryptoData();
+setInterval(fetchCryptoData, 60000);
+</script>
+
+</body>
+</html>
