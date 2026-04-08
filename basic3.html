@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Guide Pro</title>
+
+<style>
+:root {
+    --bg: #0f2027;
+    --text: #ffffff;
+    --card: rgba(255,255,255,0.05);
+}
+
+body.light {
+    --bg: #f4f7fb;
+    --text: #111;
+    --card: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.4s;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 30px;
+}
+
+.toggle-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Grid */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+/* Cards */
+.card {
+    background: var(--card);
+    border-radius: 15px;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.6s, box-shadow 0.3s;
+}
+
+/* Glow effect */
+.card:hover {
+    box-shadow: 0 0 20px #00d4ff, 0 0 40px #0072ff;
+    transform: translateY(-8px);
+}
+
+/* Visible animation */
+.card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Crypto price section */
+.prices {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+
+.price-box {
+    background: var(--card);
+    padding: 15px 25px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Tip */
+.tip {
+    margin: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+</style>
+</head>
+
+<body>
+
+<button class="toggle-btn" onclick="toggleMode()">🌙 Toggle</button>
+
+<header>
+    <h1>🚀 Crypto Trading Guide</h1>
+    <p>Learn + Track Prices Live</p>
+</header>
+
+<!-- Live Prices -->
+<div class="prices">
+    <div class="price-box">
+        <h3>Bitcoin</h3>
+        <p id="btc">Loading...</p>
+    </div>
+    <div class="price-box">
+        <h3>Ethereum</h3>
+        <p id="eth">Loading...</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Basic Terms</h2>
+        <ul>
+            <li>Cryptocurrency</li>
+            <li>Bitcoin</li>
+            <li>Ethereum</li>
+            <li>Altcoin</li>
+            <li>Stablecoin</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Trading</h2>
+        <ul>
+            <li>Bull Market</li>
+            <li>Bear Market</li>
+            <li>Long / Short</li>
+            <li>Leverage</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Charts</h2>
+        <ul>
+            <li>Candlestick</li>
+            <li>Support</li>
+            <li>Resistance</li>
+            <li>Trend</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Investment</h2>
+        <ul>
+            <li>HODL</li>
+            <li>DCA</li>
+            <li>Portfolio</li>
+            <li>ROI</li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="tip">
+    <h2>💡 Beginner Tips</h2>
+    <ul>
+        <li>Start with BTC & ETH</li>
+        <li>Use DCA</li>
+        <li>Avoid leverage early</li>
+    </ul>
+</div>
+
+<script>
+
+/* Dark / Light Mode */
+function toggleMode() {
+    document.body.classList.toggle("light");
+}
+
+/* Scroll Animation */
+const cards = document.querySelectorAll('.card');
+
+window.addEventListener('scroll', () => {
+    cards.forEach(card => {
+        const top = card.getBoundingClientRect().top;
+        if (top < window.innerHeight - 50) {
+            card.classList.add('show');
+        }
+    });
+});
+
+/* Initial trigger */
+window.dispatchEvent(new Event('scroll'));
+
+/* Live Crypto Prices */
+async function getPrices() {
+    const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
+    const data = await res.json();
+
+    document.getElementById("btc").innerText = "$" + data.bitcoin.usd;
+    document.getElementById("eth").innerText = "$" + data.ethereum.usd;
+}
+
+getPrices();
+setInterval(getPrices, 30000);
+
+</script>
+
+</body>
+</html>
