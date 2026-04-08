@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Crypto Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.coin {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.price {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.green { color: #22c55e; }
+.red { color: #ef4444; }
+
+canvas {
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚀 Crypto Live Dashboard 🚀</h1>
+
+<div class="container" id="cryptoContainer"></div>
+
+<script>
+
+const coins = [
+    "bitcoin","ethereum","ripple","binancecoin","solana",
+    "dogecoin","cardano","litecoin","shiba-inu",
+    "uniswap","pepe","aave","render-token"
+];
+
+const symbols = {
+    "bitcoin":"Bitcoin (BTC)","ethereum":"Ethereum (ETH)","ripple":"Ripple (XRP)",
+    "binancecoin":"Binancecoin (BNB)","solana":"Solana (SOL)","dogecoin":"Dogecoin (DOGE)",
+    "cardano":"Cardano (ADA)","litecoin":"Litecoin (LTC)","shiba-inu":"Shiba Inu (SHIB)",
+    "uniswap":"Uniswap (UNI)","pepe":"Pepe (PEPE)","aave":"Aave (AAVE)","render-token":"Render-token (RENDER)"
+};
+
+async function fetchCrypto() {
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins.join(",")}&price_change_percentage=24h`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    displayData(data);
+}
+
+function displayData(data) {
+    const container = document.getElementById("cryptoContainer");
+    container.innerHTML = "";
+
+    data.forEach(coin => {
+
+        const change = coin.price_change_percentage_24h;
+        const changeClass = change >= 0 ? "green" : "red";
+
+        const inr = (coin.current_price * 83).toFixed(2);
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <div class="coin">${symbols[coin.id]}</div>
+            <div class="price">💲 $${coin.current_price}</div>
+            <div class="price">₹ ${inr}</div>
+            <div class="${changeClass}">
+                ${change.toFixed(2)}% (24h)
+            </div>
+            <div>Volume: $${coin.total_volume.toLocaleString()}</div>
+            <canvas id="chart-${coin.id}" height="100"></canvas>
+        `;
+
+        container.appendChild(card);
+
+        createChart(coin.id);
+    });
+}
+
+// Simple random chart (replace with real historical API if needed)
+function createChart(id) {
+    const ctx = document.getElementById(`chart-${id}`).getContext("2d");
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Array.from({length: 10}, (_, i) => i),
+            datasets: [{
+                data: Array.from({length: 10}, () => Math.random()*100),
+                borderColor: '#3b82f6',
+                borderWidth: 2,
+                fill: false,
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false }},
+            scales: { x: { display: false }, y: { display: false }}
+        }
+    });
+}
+
+// Auto refresh every 30 seconds
+fetchCrypto();
+setInterval(fetchCrypto, 30000);
+
+</script>
+
+</body>
+</html>
