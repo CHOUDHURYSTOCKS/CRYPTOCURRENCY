@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Buttons Page</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            /* Beautiful gradient background */
+            background: linear-gradient(135deg, #667eea, #764ba2, #ff758c);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        .btn {
+            display: block;
+            width: 260px;
+            margin: 15px;
+            padding: 18px;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+            border-radius: 30px;
+
+            /* Gradient button */
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.08);
+            background: linear-gradient(45deg, #a18cd1, #fbc2eb);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LIVE CRYPTO DASHBOARD</h1>
+
+   <a href="MyChoices.html" class="btn" target="_blank">Crypto Pro Dashboard</a>
+    <a href="MyChoices2.html" class="btn" target="_blank">Crypto Live Dashboard</a>
+    <a href="Top100.html" class="btn" target="_blank">Top 100 Cryptocurrencies Live Dashboard</a>
+
+</body>
+</html>
