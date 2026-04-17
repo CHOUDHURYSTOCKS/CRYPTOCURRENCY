@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Learning Hub</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        .highlight {
+            background: #e8f4ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+        .analogy {
+            background: #fef9e7;
+            padding: 10px;
+            border-left: 4px solid #f1c40f;
+            margin: 15px 0;
+        }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        background: #f4f6f8;
+        color: #333;
+        transition: 0.3s;
+    }
+
+    .dark {
+        background: #121212;
+        color: #eee;
+    }
+
+    header {
+        background: linear-gradient(135deg, #0a2540, #1e90ff);
+        color: white;
+        text-align: center;
+        padding: 30px;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    section {
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: 0.6s;
+    }
+
+    .dark section {
+        background: #1e1e1e;
+    }
+
+    section.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    img {
+        width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    canvas {
+        margin-top: 20px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        background: #0a2540;
+        color: white;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🚀 Crypto Learning Hub</h1>
+    <p>Understand Cryptocurrency in a Simple Way</p>
+    <button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+</header>
+
+<div class="container">
+
+<section>
+    <h2>What is Cryptocurrency?</h2>
+    <p>
+        Cryptocurrency is digital money that works without banks. It uses encryption 
+        and runs on decentralized networks.
+    </p>
+    <h2>Understanding Cryptocurrency-A Step-by-Step Guide</h2>
+
+    <img src="Understanding Cryptocurrency.png">
+</section>
+
+<section>
+    <h2>Blockchain Explained</h2>
+    <p>
+        Blockchain is like a digital ledger where transactions are recorded securely 
+        across many computers.
+    </p>
+    <h2>The Journey of Cryptocurrency (From Start to FInish)</h2>
+    <img src="The Journey of Cryptocurrency.png">
+</section>
+
+<section>
+    <h2>Coins-Tokens-Altcoins</h2>
+    <img src="Coins-Tokens-Altcoins.png">
+</section>
+
+<section>
+    <h2>Coins,Tokens, and Altcoins - Understanding the Difference Easily</h2>
+    <img src="Coins,Tokens, and Altcoins.png">
+</section>
+
+<section>
+    <h2>Coins,Tokens & Altcoins - How They Relate</h2>
+    <img src="Coins,Tokens & Altcoins.png">
+</section>
+<section>
+    <h2>Top 10 Meme Coins: Coins vs Tokens</h2>
+    <img src="Top 10 Meme Coins.png">
+</section>
+<section>
+    <h2>Cryptocurrency & Blockchain
+</h2>
+    <img src="Cryptocurrency & Blockchain.png">
+</section>
+<section>
+    <h2>Explaining Cryptocurrency and Blockchain Technology
+</h2>
+    <img src="Explaining Cryptocurrency.png">
+</section>
+<section>
+    <h2>What is Stored in a Crypto Wallet?</h2>
+<div class="container">
+    <h1>What you store and transfer from a crypto wallet is generally called cryptocurrency</h1>
+    <p>
+        What you store and transfer from a crypto wallet is generally called 
+        <strong>cryptocurrency</strong>, but there’s an important nuance that often gets misunderstood.
+    </p>
+
+    <p>
+        A crypto wallet doesn’t literally “hold” coins the way a physical wallet holds cash. 
+        Instead, it stores <strong>private keys</strong>, which give you access to assets recorded on a blockchain.
+    </p>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li>Cryptocurrencies exist on a blockchain (a distributed ledger).</li>
+        <li>Your wallet stores <strong>private keys</strong> (like a secret password).</li>
+        <li>These keys allow you to:
+            <ul>
+                <li>Prove ownership of your crypto</li>
+                <li>Send (transfer) it to others</li>
+                <li>Access your balance on the blockchain</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="highlight">
+        <strong>Important:</strong> When you “send crypto,” you’re not moving coins from your wallet. 
+        You’re authorizing a transaction on the blockchain that changes ownership.
+    </div>
+
+    <div class="analogy">
+        <strong>Simple Analogy:</strong><br>
+        Blockchain = Bank ledger<br>
+        Crypto = Money in the ledger<br>
+        Wallet = Your debit card + PIN
+    </div>
+
+    <h2>Important Distinction</h2>
+    <p>
+        Not everything in a wallet is strictly cryptocurrency. Wallets can also store:
+    </p>
+    <ul>
+        <li>Tokens (like stablecoins or utility tokens)</li>
+        <li>NFTs (digital collectibles)</li>
+    </ul>
+
+    <p>
+        In general conversation, people use “cryptocurrency” to describe these transferable digital assets.
+    </p>
+
+</div>
+</section>
+<section>
+    <h2>🔥 Popular Cryptocurrencies</h2>
+    <ul>
+        <li>Bitcoin (BTC)</li>
+        <li>Ethereum (ETH)</li>
+        <li>Solana (SOL)</li>
+        <li>Cardano (ADA)</li>
+    </ul>
+</section>
+
+<section>
+    <h2>✅ Advantages</h2>
+    <ul>
+        <li>Decentralized</li>
+        <li>Fast transactions</li>
+        <li>Secure</li>
+    </ul>
+</section>
+
+<section>
+    <h2>⚠️ Risks</h2>
+    <ul>
+        <li>High volatility</li>
+        <li>Hacking risks</li>
+        <li>Regulation issues</li>
+    </ul>
+</section>
+
+</div>
+
+<footer>
+    <p>© 2026 Crypto Learning Hub</p>
+</footer>
+
+<script>
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+}
+
+// Scroll animation
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 50) {
+            sec.classList.add("show");
+        }
+    });
+});
+
+
+</script>
+
+</body>
+</html>
