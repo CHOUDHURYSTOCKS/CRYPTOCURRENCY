@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Coin Intelligence Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: #151a23;
+            --accent-green: #00ff88;
+            --accent-cyan: #00e5ff;
+            --accent-purple: #9d4edd;
+            --text-main: #f0f4f8;
+            --text-muted: #94a3b8;
+            --border-color: #2a3447;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.05);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .badge {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid var(--accent-green);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--accent-green);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+        }
+
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent-green);
+            text-decoration: underline;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+        button{
+            width: 500px;
+            height:70px;
+            background-color: yellow;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Meme Coin Intelligence Dashboard</h1>
+        <p>Your comprehensive guide to viral cryptocurrencies, market dynamics, analytics tools, and emerging trends.</p>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. What are Meme Coins -->
+        <section class="card">
+            <h2>What Are Meme Coins?</h2>
+            <p>Meme coins are cryptocurrencies born out of internet memes, pop culture phenomena, and social media virality. Unlike traditional blockchain assets designed for complex utility, meme coins rely heavily on community engagement, viral marketing, and collective speculation.</p>
+            <div class="warning-box">
+                <strong>Risk Disclaimer:</strong> Meme coins are hyper-volatile assets driven by market sentiment. Always practice strict risk management and never invest funds you cannot afford to lose completely.
+            </div>
+        </section>
+
+        <!-- 2. Popular & Actively Traded Meme Coins -->
+        <section class="card">
+            <h2>Popular & Actively Traded Tokens</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Coin</th>
+                        <th>Network</th>
+                        <th>Category / Driver</th>
+                        <th>Primary Focus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dogecoin (DOGE)</strong></td>
+                        <td>Dogecoin L1</td>
+                        <td>Legacy Leader</td>
+                        <td>High CEX Liquidity & Payments</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shiba Inu (SHIB)</strong></td>
+                        <td>Ethereum</td>
+                        <td>Ecosystem Utility</td>
+                        <td>Shibarium L2, DEX & Burns</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pepe (PEPE)</strong></td>
+                        <td>Ethereum</td>
+                        <td>Pure Meme Culture</td>
+                        <td>High Trading Volume & Futures</td>
+                    </tr>
+                    <tr>
+                        <td><strong>dogwifhat (WIF)</strong></td>
+                        <td>Solana</td>
+                        <td>Viral Solana Meta</td>
+                        <td>High Beta Volatility</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bonk (BONK)</strong></td>
+                        <td>Solana</td>
+                        <td>Solana Community</td>
+                        <td>DeFi Integrations & Ecosystem</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Grid 2 Columns for Trading & Future Potential -->
+        <div class="grid-2">
+            <!-- 3. Best for Futures Trading -->
+            <section class="card">
+                <h2>Best for Futures Trading</h2>
+                <p style="margin-bottom: 12px; color: var(--text-muted);">Tokens with high liquidity, deep order books, and high leverage availability:</p>
+                <ul>
+                    <li><strong>DOGE & SHIB Futures:</strong> Deepest order books, suitable for swing trading.</li>
+                    <li><strong>PEPE Futures:</strong> Exceptional volume-to-market-cap ratio; frequent high-percentage moves.</li>
+                    <li><strong>BONK & WIF Futures:</strong> Premier targets for trading Solana ecosystem momentum.</li>
+                </ul>
+            </section>
+
+            <!-- 4. Potential Meme Coins in Future -->
+            <section class="card">
+                <h2>Emerging Future Potential</h2>
+                <p style="margin-bottom: 12px; color: var(--text-muted);">Narratives and projects capturing institutional and retail mindshare:</p>
+                <ul>
+                    <li><strong>Pudgy Penguins (PENGU):</strong> Bridging Web2 physical retail merchandise with Web3 tokens.</li>
+                    <li><strong>Goatseus Maximus (GOAT):</strong> Leading the emergent AI-agent coin meta.</li>
+                    <li><strong>Brett (BRETT):</strong> Key liquidity anchor on Base L2 network.</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Grid 2 Columns for Resources & Launchpads -->
+        <div class="grid-2">
+            <!-- 5. Analytics & Info Sites -->
+            <section class="card">
+                <h2>Meme Coin Analytics & Info</h2>
+                <ul>
+                    <li><a href="https://coinmarketcap.com" target="_blank">CoinMarketCap</a> & <a href="https://coingecko.com" target="_blank">CoinGecko</a> — Live prices and market cap tracking.</li>
+                    <li><a href="https://dexscreener.com" target="_blank">DEXScreener</a> — Real-time decentralized exchange charts and pool monitoring.</li>
+                    <li><a href="https://dextools.io" target="_blank">DEXTools</a> — On-chain analytics and liquidity verification.</li>
+                    <li><a href="https://bubblemaps.io" target="_blank">Bubblemaps</a> — Supply distribution and holder cluster analysis.</li>
+                </ul>
+            </section>
+
+            <!-- 6. Launch Location Webpages -->
+            <section class="card">
+                <h2>Where New Coins Launch</h2>
+                <ul>
+                    <li><a href="https://pump.fun" target="_blank">Pump.fun</a> — Primary Solana launchpad for fair-launch tokens.</li>
+                    <li><a href="https://sun.io" target="_blank">SunPump</a> — Official TRON ecosystem meme launch hub.</li>
+                    <li><a href="https://four.meme" target="_blank">Four.meme</a> — BNB Chain meme creation platform.</li>
+                    <li><a href="https://dexscreener.com/new-pairs" target="_blank">DEXScreener New Pairs</a> — Live feed of newly deployed liquidity pools.</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- 7. Low Cap / 24h Launches -->
+        <section class="card">
+            <h2>Micro-Caps & Recent Launches (&lt;24h - 1 Wk)</h2>
+            <p>New micro-cap tokens carry maximum risk (including rug pulls and honeypots). To discover low market cap launches in real time:</p>
+            <ul style="margin-top: 10px;">
+                <li>Check the <strong>New Pairs</strong> tab on DEXScreener filtered by creation time (&lt;24 hours).</li>
+                <li>Monitor <strong>Pump.fun Graduation Feeds</strong> for tokens reaching Raydium pool listings.</li>
+                <li>Always audit smart contracts using tools like <em>Token Sniffer</em> before interacting with new contracts.</li>
+            </ul>
+        </section>
+        <section class="card">
+            <button><a href="meme_coins.html" target="_blank" style="text-decoration: none;font-size: 2em;color:green">MEME COIN TRADING GUIDE</a></button>
+        </section>
+         <section class="card">
+            <button><a href="AI_CyptoProject.html" target="_blank" style="text-decoration: none;font-size: 2em;color:green">AI CRYPTO PROJECTS</a></button>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© Meme Coin Intelligence Hub. Provided for educational and informational purposes only.</p>
+    </footer>
+
+</body>
+</html>
