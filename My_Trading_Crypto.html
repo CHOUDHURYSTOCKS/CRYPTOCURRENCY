@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Crypto Market Dashboard</title>
+  <!-- Google Fonts & Lucide Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --bg-dark: #0b0e14;
+      --card-bg: #151a23;
+      --card-hover: #1c2330;
+      --text-main: #f0f4f8;
+      --text-muted: #8a99ad;
+      --accent-blue: #2563eb;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --border-color: #222b3a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Navigation */
+    header {
+      background: rgba(21, 26, 35, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
+    }
+
+    .brand i {
+      color: #3b82f6;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-green);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Chart Section */
+    .chart-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .chart-title-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chart-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .chart-price-display {
+      font-size: 1.5rem;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    .widget-container {
+      height: 500px;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Market Grid */
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .crypto-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .crypto-card:hover {
+      background: var(--card-hover);
+      transform: translateY(-2px);
+      border-color: rgba(59, 130, 246, 0.4);
+    }
+
+    .crypto-card.active {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pair-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .symbol-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .pair-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .badge-pct {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .badge-pct.up {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+    }
+
+    .badge-pct.down {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+    }
+
+    .card-mid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .live-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: monospace;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 0.75rem;
+    }
+
+    /* Flash Animations for Price Updates */
+    @keyframes flashGreen {
+      0% { color: var(--accent-green); }
+      100% { color: var(--text-main); }
+    }
+
+    @keyframes flashRed {
+      0% { color: var(--accent-red); }
+      100% { color: var(--text-main); }
+    }
+
+    .flash-green { animation: flashGreen 0.6s ease; }
+    .flash-red { animation: flashRed 0.6s ease; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .widget-container { height: 380px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <i data-lucide="candlestick-chart"></i>
+      <span>CryptoPulse Live</span>
+    </div>
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      <span>Binance Stream Connected</span>
+    </div>
+  </header>
+
+  <!-- Content Area -->
+  <div class="container">
+    
+    <!-- Interactive TradingView Chart Section -->
+    <section class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title-group">
+          <span class="chart-title" id="chartSymbol">BINANCE:1000SHIBUSDT</span>
+          <span class="chart-price-display" id="chartPrice">--</span>
+        </div>
+      </div>
+      
+      <!-- Embedded TradingView Chart Widget -->
+      <div class="widget-container" id="tv_chart_container">
+        <!-- TradingView iframe injected dynamically -->
+      </div>
+    </section>
+
+    <!-- Real-Time Token Grid -->
+    <section class="market-grid" id="marketGrid">
+      <!-- Cards generated dynamically via JavaScript -->
+    </section>
+  </div>
+
+  <!-- TradingView Script -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+  <script>
+    // List of requested crypto pairs
+    const pairs = [
+      { id: '1000shibusdt', symbol: '1000SHIB', name: '1000Shiba Inu', tvSymbol: 'BINANCE:1000SHIBUSDT' },
+      { id: 'xrpusdt', symbol: 'XRP', name: 'XRP', tvSymbol: 'BINANCE:XRPUSDT' },
+      { id: 'suiusdt', symbol: 'SUI', name: 'Sui', tvSymbol: 'BINANCE:SUIUSDT' },
+      { id: 'ondousdt', symbol: 'ONDO', name: 'Ondo Finance', tvSymbol: 'BINANCE:ONDOUSDT' },
+      { id: 'fetusdt', symbol: 'FET', name: 'Artificial Superintelligence', tvSymbol: 'BINANCE:FETUSDT' },
+      { id: 'renderusdt', symbol: 'RENDER', name: 'Render', tvSymbol: 'BINANCE:RENDERUSDT' },
+      { id: 'vetusdt', symbol: 'VET', name: 'VeChain', tvSymbol: 'BINANCE:VETUSDT' },
+      { id: 'iousdt', symbol: 'IO', name: 'io.net', tvSymbol: 'BINANCE:IOUSDT' },
+      { id: 'aktusdt', symbol: 'AKT', name: 'Akash Network', tvSymbol: 'BINANCE:AKTUSDT' },
+      { id: 'linkusdt', symbol: 'LINK', name: 'Chainlink', tvSymbol: 'BINANCE:LINKUSDT' }
+    ];
+
+    let activePair = pairs[0];
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Render Cards in Grid
+    function renderGrid() {
+      const grid = document.getElementById('marketGrid');
+      grid.innerHTML = pairs.map(pair => `
+        <div class="crypto-card ${pair.id === activePair.id ? 'active' : ''}" id="card-${pair.id}" onclick="selectPair('${pair.id}')">
+          <div class="card-top">
+            <div class="pair-info">
+              <span class="symbol-name">${pair.symbol}</span>
+              <span class="pair-tag">/ USDT</span>
+            </div>
+            <span class="badge-pct" id="pct-${pair.id}">--%</span>
+          </div>
+          <div class="card-mid">
+            <span class="live-price" id="price-${pair.id}">--</span>
+          </div>
+          <div class="card-bottom">
+            <span>24h Vol</span>
+            <span id="vol-${pair.id}">--</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Load TradingView Chart
+    function loadChart(tvSymbol) {
+      document.getElementById('tv_chart_container').innerHTML = '';
+      new TradingView.widget({
+        "autosize": true,
+        "symbol": tvSymbol,
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "allow_symbol_change": false,
+        "container_id": "tv_chart_container"
+      });
+    }
+
+    // Select Active Pair
+    function selectPair(pairId) {
+      activePair = pairs.find(p => p.id === pairId);
+      
+      // Highlight Active Card
+      document.querySelectorAll('.crypto-card').forEach(c => c.classList.remove('active'));
+      document.getElementById(`card-${pairId}`).classList.add('active');
+
+      // Update Chart Title and Embedded Chart
+      document.getElementById('chartSymbol').textContent = `${activePair.symbol} / USDT`;
+      loadChart(activePair.tvSymbol);
+    }
+
+    // Format Large Volume Numbers
+    function formatVolume(val) {
+      const num = parseFloat(val);
+      if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+      if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+      if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+      return num.toFixed(2);
+    }
+
+    // Connect to Binance WebSocket Stream
+    function initWebSocket() {
+      const streamNames = pairs.map(p => `${p.id}@ticker`).join('/');
+      const wsUrl = `wss://stream.binance.com:9443/ws/${streamNames}`;
+      const ws = new WebSocket(wsUrl);
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const pairId = data.s.toLowerCase();
+
+        const priceEl = document.getElementById(`price-${pairId}`);
+        const pctEl = document.getElementById(`pct-${pairId}`);
+        const volEl = document.getElementById(`vol-${pairId}`);
+
+        if (priceEl && pctEl && volEl) {
+          const newPrice = parseFloat(data.c).toFixed(parseFloat(data.c) < 1 ? 4 : 2);
+          const oldPrice = parseFloat(priceEl.textContent);
+          
+          // Flash Color Effects
+          if (oldPrice && newPrice !== oldPrice) {
+            priceEl.classList.remove('flash-green', 'flash-red');
+            void priceEl.offsetWidth; // Trigger reflow
+            priceEl.classList.add(newPrice > oldPrice ? 'flash-green' : 'flash-red');
+          }
+
+          priceEl.textContent = `$${newPrice}`;
+
+          // Update Percent Change
+          const pct = parseFloat(data.P);
+          pctEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
+          pctEl.className = `badge-pct ${pct >= 0 ? 'up' : 'down'}`;
+
+          // Update Volume
+          volEl.textContent = `$${formatVolume(data.q)}`;
+
+          // Update Chart Header Price if it's the Selected Pair
+          if (pairId === activePair.id) {
+            document.getElementById('chartPrice').textContent = `$${newPrice}`;
+          }
+        }
+      };
+
+      ws.onerror = (err) => console.error('WebSocket Error:', err);
+      ws.onclose = () => setTimeout(initWebSocket, 3000); // Reconnect if closed
+    }
+
+    // Initialize Dashboard
+    window.addEventListener('DOMContentLoaded', () => {
+      renderGrid();
+      loadChart(activePair.tvSymbol);
+      initWebSocket();
+    });
+  </script>
+</body>
+</html>
